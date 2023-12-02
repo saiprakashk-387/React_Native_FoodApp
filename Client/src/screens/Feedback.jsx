@@ -5,6 +5,7 @@ import {
   TouchableHighlight,
   View,
   TextInput,
+  ScrollView,
 } from 'react-native';
 import React, {useLayoutEffect, useRef, useState} from 'react';
 import {Picker} from '@react-native-picker/picker';
@@ -34,74 +35,76 @@ const Feedback = ({navigation}) => {
   }, [navigation]);
 
   return (
-    <View style={styles.container}>
-      <View style={{margin: 14}}>
-        <Text style={styles.label}>Area *</Text>
-        <TouchableHighlight style={styles.selectedContainer}>
-          <Picker
-            ref={pickerRef}
-            selectedValue={selectedLanguage}
-            mode="dropdown"
-            dropdownIconRippleColor="#000"
-            onValueChange={(itemValue, itemIndex) =>
-              setSelectedLanguage(itemValue)
-            }>
-            <Picker.Item label="Java" value="java" />
-            <Picker.Item label="JavaScript" value="js" />
-          </Picker>
-        </TouchableHighlight>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={{margin: 14}}>
+          <Text style={styles.label}>Area *</Text>
+          <TouchableHighlight style={styles.selectedContainer}>
+            <Picker
+              ref={pickerRef}
+              selectedValue={selectedLanguage}
+              mode="dropdown"
+              dropdownIconRippleColor="#000"
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedLanguage(itemValue)
+              }>
+              <Picker.Item label="Java" value="java" />
+              <Picker.Item label="JavaScript" value="js" />
+            </Picker>
+          </TouchableHighlight>
 
-        <Text style={styles.label}>Building *</Text>
-        <TouchableHighlight style={styles.selectedContainer}>
-          <Picker
-            ref={pickerRef}
-            selectedValue={selectedLanguage}
-            mode="dropdown"
-            dropdownIconRippleColor="#000"
-            onValueChange={(itemValue, itemIndex) =>
-              setSelectedLanguage(itemValue)
-            }>
-            <Picker.Item label="Java" value="java" />
-            <Picker.Item label="JavaScript" value="js" />
-          </Picker>
-        </TouchableHighlight>
+          <Text style={styles.label}>Building *</Text>
+          <TouchableHighlight style={styles.selectedContainer}>
+            <Picker
+              ref={pickerRef}
+              selectedValue={selectedLanguage}
+              mode="dropdown"
+              dropdownIconRippleColor="#000"
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedLanguage(itemValue)
+              }>
+              <Picker.Item label="Java" value="java" />
+              <Picker.Item label="JavaScript" value="js" />
+            </Picker>
+          </TouchableHighlight>
 
-        <Text style={styles.label}>Category *</Text>
-        <TouchableHighlight style={styles.selectedContainer}>
-          <Picker
-            ref={pickerRef}
-            selectedValue={selectedLanguage}
-            mode="dropdown"
-            dropdownIconRippleColor="#000"
-            onValueChange={(itemValue, itemIndex) =>
-              setSelectedLanguage(itemValue)
-            }>
-            <Picker.Item label="Java" value="java" />
-            <Picker.Item label="JavaScript" value="js" />
-          </Picker>
-        </TouchableHighlight>
+          <Text style={styles.label}>Category *</Text>
+          <TouchableHighlight style={styles.selectedContainer}>
+            <Picker
+              ref={pickerRef}
+              selectedValue={selectedLanguage}
+              mode="dropdown"
+              dropdownIconRippleColor="#000"
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedLanguage(itemValue)
+              }>
+              <Picker.Item label="Java" value="java" />
+              <Picker.Item label="JavaScript" value="js" />
+            </Picker>
+          </TouchableHighlight>
 
-        <Text style={styles.label}>Issue / Request *</Text>
-        <TouchableHighlight style={styles.selectedContainer}>
-          <Picker
-            ref={pickerRef}
-            selectedValue={selectedLanguage}
-            mode="dropdown"
-            dropdownIconRippleColor="#000"
-            onValueChange={(itemValue, itemIndex) =>
-              setSelectedLanguage(itemValue)
-            }>
-            <Picker.Item label="Java" value="java" />
-            <Picker.Item label="JavaScript" value="js" />
-          </Picker>
-        </TouchableHighlight>
+          <Text style={styles.label}>Issue / Request *</Text>
+          <TouchableHighlight style={styles.selectedContainer}>
+            <Picker
+              ref={pickerRef}
+              selectedValue={selectedLanguage}
+              mode="dropdown"
+              dropdownIconRippleColor="#000"
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedLanguage(itemValue)
+              }>
+              <Picker.Item label="Java" value="java" />
+              <Picker.Item label="JavaScript" value="js" />
+            </Picker>
+          </TouchableHighlight>
 
-        <Text style={styles.label}>Description</Text>
-        <TextInput style={styles.selectedContainer} />
+          <Text style={styles.label}>Description</Text>
+          <TextInput style={styles.selectedContainer} />
 
-        <Button title={'Submit'} style={styles.button} />
+          <Button title={'Submit'} style={styles.button} />
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

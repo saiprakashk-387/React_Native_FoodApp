@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image, ScrollView} from 'react-native';
 import React from 'react';
 import {Button} from '../components/Button';
 
@@ -16,7 +16,7 @@ const Home = ({navigation}) => {
   // Check if the current time is within the specified range
   const isTimeInRange = currentTime >= startTime && currentTime <= endTime;
   return (
-    <View>
+    <ScrollView>
       {!isTimeInRange && (
         <Text style={styles.heading}>Pre booking window has been closed</Text>
       )}
@@ -42,7 +42,7 @@ const Home = ({navigation}) => {
         source={require('../assets/images/Danfoss.jpg')}
         style={styles.bannerImg}
       />
-    </View>
+    </ScrollView>
   );
 };
 

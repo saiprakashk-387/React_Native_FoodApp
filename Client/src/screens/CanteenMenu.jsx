@@ -6,11 +6,13 @@ import {
   TouchableOpacity,
   View,
   ImageBackground,
+  ScrollView,
 } from 'react-native';
 import React, {useLayoutEffect, useState} from 'react';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {HomeButton} from '../components/IconButton';
 import {Button} from '../components/Button';
+import {DateTime} from '../utils/Dateformate';
 
 const CanteenMenu = ({navigation}) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -37,42 +39,40 @@ const CanteenMenu = ({navigation}) => {
   }, [navigation]);
 
   return (
-    <ImageBackground
-      style={styles.container}
-      source={require('../assets/images/menu_background.jpg')}>
-      <View style={styles.viewRow}>
-        <TouchableHighlight
-          style={styles.highContainer}
-          onPress={showDatePicker}>
-          <Text style={styles.highText}>Date</Text>
-        </TouchableHighlight>
-        <TouchableOpacity
-          activeOpacity={0.6}
-          style={styles.DateContainer}
-          onPress={showDatePicker}>
-          <Text style={styles.DateText}>
-            {selectedDate
-              ? selectedDate.toLocaleDateString()
-              : 'No date selected'}
-          </Text>
-        </TouchableOpacity>
-        <DateTimePickerModal
-          date={selectedDate}
-          isVisible={datePickerVisible}
-          mode="date"
-          onConfirm={handleConfirm}
-          onCancel={hideDatePicker}
-          onHide={hideDatePicker}
+    <ScrollView>
+      <ImageBackground
+        style={styles.container}
+        source={require('../assets/images/menu_background.jpg')}>
+        <View style={styles.viewRow}>
+          <TouchableHighlight
+            style={styles.highContainer}
+            onPress={showDatePicker}>
+            <Text style={styles.highText}>Date</Text>
+          </TouchableHighlight>
+          <TouchableOpacity
+            activeOpacity={0.6}
+            style={styles.DateContainer}
+            onPress={showDatePicker}>
+            <Text style={styles.DateText}>{DateTime(selectedDate)}</Text>
+          </TouchableOpacity>
+          <DateTimePickerModal
+            date={selectedDate}
+            isVisible={datePickerVisible}
+            mode="date"
+            onConfirm={handleConfirm}
+            onCancel={hideDatePicker}
+            onHide={hideDatePicker}
+          />
+        </View>
+        <Button
+          title={'Breakfast'}
+          onPress={() => navigation.navigate('FoodDetails')}
         />
-      </View>
-      <Button
-        title={'Breakfast'}
-        onPress={() => navigation.navigate('FoodDetails')}
-      />
-      <Button title={'Lunch'} />
-      <Button title={'Diet Lunch'} />
-      <Button title={'Dinner'} />
-    </ImageBackground>
+        <Button title={'Lunch'} />
+        <Button title={'Diet Lunch'} />
+        <Button title={'Dinner'} />
+      </ImageBackground>
+    </ScrollView>
   );
 };
 
@@ -101,12 +101,14 @@ const styles = StyleSheet.create({
   highContainer: {
     backgroundColor: '#393E46',
     width: '40%',
-    padding: 10,
+    // padding: 10,
     margin: 30,
+    height: 50,
   },
   highText: {
     color: '#fff',
     textAlign: 'center',
     fontSize: 20,
+    marginTop: 8,
   },
 });

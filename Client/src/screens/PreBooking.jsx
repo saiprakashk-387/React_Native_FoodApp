@@ -6,9 +6,15 @@ import {
   TouchableOpacity,
   View,
   ImageBackground,
+  ScrollView,
 } from 'react-native';
 import React, {useLayoutEffect, useState} from 'react';
-import {DefaultButton, HomeButton, TextButton, TextIconButton} from '../components/IconButton';
+import {
+  DefaultButton,
+  HomeButton,
+  TextButton,
+  TextIconButton,
+} from '../components/IconButton';
 import {SmallButton} from '../components/Button';
 
 const PreBooking = ({navigation}) => {
@@ -21,39 +27,41 @@ const PreBooking = ({navigation}) => {
   }, [navigation]);
 
   return (
-    <ImageBackground
-      style={styles.container}
-      source={require('../assets/images/pre_background.jpg')}>
-      <Text style={styles.text}>Booking Date {'  '} 06/04/2023</Text>
-      <View style={styles.section}>
-        <View style={styles.viewRow}>
-          <TextIconButton title={'Breakfast'} />
-          <SmallButton title={'cancel'} />
-        </View>
-        <View style={styles.viewRow}>
-          <TextIconButton title={'Lunch'} />
-          <SmallButton title={'cancel'} />
-        </View>
-        <Text style={[styles.text, {marginRight: 'auto', marginLeft: 100}]}>
-          (Or)
-        </Text>
-        <View style={styles.viewRow}>
-          <TextButton title={'Dinner'} style={styles.button} />
-        </View>
+    <ScrollView>
+      <ImageBackground
+        style={styles.container}
+        source={require('../assets/images/pre_background.jpg')}>
+        <Text style={styles.text}>Booking Date {'  '} 06/04/2023</Text>
+        <View style={styles.section}>
+          <View style={styles.viewRow}>
+            <TextIconButton title={'Breakfast'} />
+            <SmallButton title={'cancel'} />
+          </View>
+          <View style={styles.viewRow}>
+            <TextIconButton title={'Lunch'} />
+            <SmallButton title={'cancel'} />
+          </View>
+          <Text style={[styles.text, {marginRight: 'auto', marginLeft: 100}]}>
+            (Or)
+          </Text>
+          <View style={styles.viewRow}>
+            <TextButton title={'Dinner'} style={styles.button} />
+          </View>
 
-        <Text style={styles.text}>
-          Your Food Pre-Booking for {''} 06/04/2023
-        </Text>
-        <View style={[styles.viewRow, {marginLeft: 12}]}>
-          <DefaultButton title={'Lunch'} />
-          <SmallButton title={'cancel'} />
+          <Text style={styles.text}>
+            Your Food Pre-Booking for {''} 06/04/2023
+          </Text>
+          <View style={[styles.viewRow, {marginLeft: 12}]}>
+            <DefaultButton title={'Lunch'} />
+            <SmallButton title={'cancel'} />
+          </View>
+          <View style={[styles.viewRow, {marginLeft: 12, marginTop: -30}]}>
+            <DefaultButton title={'Dinner'} />
+            <SmallButton title={'cancel'} />
+          </View>
         </View>
-        <View style={[styles.viewRow, {marginLeft: 12, marginTop: -30}]}>
-          <DefaultButton title={'Dinner'} />
-          <SmallButton title={'cancel'} />
-        </View>
-      </View>
-    </ImageBackground>
+      </ImageBackground>
+    </ScrollView>
   );
 };
 
