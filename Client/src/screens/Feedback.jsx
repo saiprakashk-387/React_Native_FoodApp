@@ -6,22 +6,38 @@ import {
   View,
   TextInput,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useLayoutEffect, useRef, useState} from 'react';
 import {Picker} from '@react-native-picker/picker';
-import {useDispatch} from 'react-redux';
+import DocumentPicker from 'react-native-document-picker';
+import RNFS from 'react-native-fs';
+import { useDispatch } from 'react-redux';
 import {HomeButton, RefrashButton} from '../components/IconButton';
 import {Button} from '../components/Button';
-import {fileUrl} from '../utils/base64';
 import {PostFeedService} from '../services';
 
+
 const Feedback = ({navigation}) => {
-  const dispatch = useDispatch();
-  const [area, setArea] = useState();
-  const [building, setBuilding] = useState('');
-  const [category, setCategory] = useState('');
-  const [issue, setIssue] = useState('');
-  const [description, setDescription] = useState('');
+  const dispatch = useDispatch()
+  const [selectedFile, setSelectedFile] = useState();
+  const [inputValues, setInputValues] = useState({
+    area: '',
+    building: '',
+    category: '',
+    request: '',
+    description: '',
+  });
+  const pickerRef = useRef();
+
+  const handleInputChange = (inputName, text) => {
+    console.log('inputName', inputName);
+    console.log('text', text);
+    setInputValues({
+      ...inputValues,
+      [inputName]: text,
+    });
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -33,20 +49,43 @@ const Feedback = ({navigation}) => {
       ),
     });
   }, [navigation]);
+  const pickDocument = async () => {
+    try {
+      const result = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+      });
+      console.log(
+        result[0].fileCopyUri || result[0].uri,
+        result[0].type, // mime type
+        result[0].name,
+        result[0].size,
+      );
+      const uri = result[0]?.uri || result[0]?.fileCopyUri;
 
-  const onSumit = async () => {
-    var obj = {
-      area: area,
-      building: building,
-      category: category,
-      request: issue,
-      description: description,
-      fileurl: fileUrl,
-    };
-    console.log('obj', obj);
-    await dispatch(PostFeedService(obj));
+      if (uri) {
+        const fileContent = await RNFS.readFile(uri, 'base64');
+        setSelectedFile(fileContent);
+        console.log('Base64 string:', fileContent);
+      } else {
+        console.error('File URI is undefined');
+      }
+    } catch (err) {
+      console.error('Error picking document:', err);
+    }
   };
-
+  console.log('selected value', selectedFile);
+  const getFeedback = async () => {
+    const FeedbackForm = {
+      area: inputValues.area,
+      building: inputValues.building,
+      category: inputValues.category,
+      request: inputValues.request,
+      description: inputValues.description,
+      fileurl: "data:application/pdf;base64," +  selectedFile,
+    };
+    console.log('FeedbackForm', FeedbackForm);
+    await dispatch(PostFeedService(FeedbackForm))
+  };
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -54,71 +93,92 @@ const Feedback = ({navigation}) => {
           <Text style={styles.label}>Area *</Text>
           <TouchableHighlight style={styles.selectedContainer}>
             <Picker
-              style={{color: '#000'}}
-              selectedValue={area}
+              style={{color: "#000"}}
+              ref={pickerRef}
+              selectedValue={inputValues.area}
               mode="dropdown"
               dropdownIconColor={'#000'}
               dropdownIconRippleColor="#000"
-              onValueChange={(itemValue, itemIndex) => setArea(itemValue)}>
-              <Picker.Item label="Select ..." value="" />
-              <Picker.Item label="Java" value="java" />
-              <Picker.Item label="JavaScript" value="js" />
+              onValueChange={(itemValue, itemIndex) =>
+                handleInputChange('area', itemValue)
+              }>
+              <Picker.Item label="Select Area" value="" />
+              <Picker.Item label="Chennai" value="chennai" />
+              <Picker.Item label="Banglore" value="banglore" />
             </Picker>
           </TouchableHighlight>
 
           <Text style={styles.label}>Building *</Text>
           <TouchableHighlight style={styles.selectedContainer}>
             <Picker
-              style={{color: '#000'}}
-              selectedValue={building}
+              style={{color: "#000"}}
+              ref={pickerRef}
+              selectedValue={inputValues.building}
               mode="dropdown"
               dropdownIconColor={'#000'}
               dropdownIconRippleColor="#000"
-              onValueChange={(itemValue, itemIndex) => setBuilding(itemValue)}>
-              <Picker.Item label="Select ..." value="" />
-              <Picker.Item label="Nato" value="nato" />
-              <Picker.Item label="Warsaw" value="warsaw" />
+              onValueChange={(itemValue, itemIndex) =>
+                handleInputChange('building', itemValue)
+              }>
+              <Picker.Item label="Select building" value="" />
+              <Picker.Item label="VS Mall" value="vs_mall" />
+              <Picker.Item label="Forum Mall" value="forum_mall" />
             </Picker>
           </TouchableHighlight>
 
           <Text style={styles.label}>Category *</Text>
           <TouchableHighlight style={styles.selectedContainer}>
             <Picker
-              style={{color: '#000'}}
-              selectedValue={category}
+              style={{color: "#000"}}
+              ref={pickerRef}
+              selectedValue={inputValues.category}
               mode="dropdown"
               dropdownIconColor={'#000'}
               dropdownIconRippleColor="#000"
-              onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}>
-              <Picker.Item label="Select ..." value="" />
-              <Picker.Item label="Java" value="java" />
-              <Picker.Item label="JavaScript" value="js" />
+              onValueChange={(itemValue, itemIndex) =>
+                handleInputChange('category', itemValue)
+              }>
+              <Picker.Item label="Select Category" value="" />
+              <Picker.Item label="Maintenance" value="maintenance" />
+              <Picker.Item label="Wifi" value="wifi" />
             </Picker>
           </TouchableHighlight>
 
           <Text style={styles.label}>Issue / Request *</Text>
           <TouchableHighlight style={styles.selectedContainer}>
             <Picker
-              style={{color: '#000'}}
-              selectedValue={issue}
+              style={{color: "#000"}}
+              ref={pickerRef}
+              selectedValue={inputValues.request}
               mode="dropdown"
               dropdownIconColor={'#000'}
               dropdownIconRippleColor="#000"
-              onValueChange={(itemValue, itemIndex) => setIssue(itemValue)}>
-              <Picker.Item label="Select ..." value="" />
-              <Picker.Item label="Java" value="java" />
-              <Picker.Item label="JavaScript" value="js" />
+              onValueChange={(itemValue, itemIndex) =>
+                handleInputChange('request', itemValue)
+              }>
+              <Picker.Item label="Select Request" value="" />
+              <Picker.Item label="Access" value="accesss" />
+              <Picker.Item label="Entry" value="entry" />
             </Picker>
           </TouchableHighlight>
 
           <Text style={styles.label}>Description</Text>
           <TextInput
             style={styles.selectedContainer}
-            value={description}
-            onChangeText={event => setDescription(event)}
+            value={inputValues.description}
+            name="description"
+            onChangeText={text => handleInputChange('description', text)}
           />
 
-          <Button title={'Submit'} style={styles.button} onPress={onSumit} />
+          <TouchableOpacity onPress={pickDocument} style={styles.buttonn}>
+            <Text style={styles.buttonText}>Choose Document</Text>
+          </TouchableOpacity>
+
+          <Button
+            title={'Submit'}
+            style={styles.button}
+            onPress={getFeedback}
+          />
         </View>
       </View>
     </ScrollView>
@@ -146,5 +206,13 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 30,
     paddingVertical: 8,
+  },
+  buttonn: {
+    backgroundColor: '#007BFF',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
   },
 });
