@@ -34,52 +34,55 @@ const PreBooking = ({navigation}) => {
     dispatch(GetOrderFoodService());
   }, []);
 
-  console.log('dispatch order', order);
-
   const orderCancel = async id => {
     await dispatch(DeleteFoodService(id));
-    await dispatch(GetOrderFoodService());
   };
 
   return (
     <ImageBackground
       style={styles.container}
       source={require('../assets/images/pre_background.jpg')}>
-      <ScrollView>
-        <Text style={styles.text}>
-          Booking Date {'  '} {order[0]?.availabledate}
-        </Text>
-        <View style={styles.section}>
-          {order &&
-            order?.map((orderItem, i) => (
-              <View style={styles.viewRow} key={i}>
-                <TextIconButton title={orderItem?.foodtype} />
-                <SmallButton
-                  title={'cancel'}
-                  onPress={() => orderCancel(orderItem?._id)}
-                />
-              </View>
-            ))}
-
-          <Text style={[styles.text, {marginRight: 'auto', marginLeft: 100}]}>
-            (Or)
-          </Text>
-          <View style={styles.viewRow}>
-            <TextButton title={'Dinner'} style={styles.button} />
-          </View>
-
+      {order.length > 0 ? (
+        <ScrollView>
           <Text style={styles.text}>
-            Your Food Pre-Booking for {''} {order[0]?.availabledate}
+            Booking Date {'  '} {order[0]?.availabledate}
           </Text>
-          {order &&
-            order.map((orderItem, i) => (
-              <View style={[styles.viewRow, {marginLeft: 12}]} key={i}>
-                <DefaultButton title={orderItem?.foodtype} />
-                <SmallButton title={'cancel'} style={{marginLeft: 22}} />
-              </View>
-            ))}
+          <View style={styles.section}>
+            {order &&
+              order?.map((orderItem, i) => (
+                <View style={styles.viewRow} key={i}>
+                  <TextIconButton title={orderItem?.foodtype} />
+                  <SmallButton
+                    title={'cancel'}
+                    onPress={() => orderCancel(orderItem?._id)}
+                  />
+                </View>
+              ))}
+
+            <Text style={[styles.text, {marginRight: 'auto', marginLeft: 100}]}>
+              (Or)
+            </Text>
+            <View style={styles.viewRow}>
+              <TextButton title={'Dinner'} style={styles.button} />
+            </View>
+
+            <Text style={styles.text}>
+              Your Food Pre-Booking for {''} {order[0]?.availabledate}
+            </Text>
+            {order &&
+              order.map((orderItem, i) => (
+                <View style={[styles.viewRow, {marginLeft: 12}]} key={i}>
+                  <DefaultButton title={orderItem?.foodtype} />
+                  <SmallButton title={'cancel'} style={{marginLeft: 22}} />
+                </View>
+              ))}
+          </View>
+        </ScrollView>
+      ) : (
+        <View style={styles.section}>
+          <Text style={styles.error}> No Data Found. </Text>
         </View>
-      </ScrollView>
+      )}
     </ImageBackground>
   );
 };
@@ -119,5 +122,11 @@ const styles = StyleSheet.create({
   button: {
     paddingHorizontal: 50,
     paddingVertical: 12,
+  },
+  error: {
+    fontSize: 24,
+    color: 'red',
+    backgroundColor: '#fff',
+    fontWeight: 'bold'
   },
 });

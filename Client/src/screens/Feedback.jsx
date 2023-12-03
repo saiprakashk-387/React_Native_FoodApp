@@ -12,14 +12,13 @@ import React, {useLayoutEffect, useRef, useState} from 'react';
 import {Picker} from '@react-native-picker/picker';
 import DocumentPicker from 'react-native-document-picker';
 import RNFS from 'react-native-fs';
-import { useDispatch } from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {HomeButton, RefrashButton} from '../components/IconButton';
 import {Button} from '../components/Button';
 import {PostFeedService} from '../services';
 
-
 const Feedback = ({navigation}) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [selectedFile, setSelectedFile] = useState();
   const [inputValues, setInputValues] = useState({
     area: '',
@@ -73,7 +72,7 @@ const Feedback = ({navigation}) => {
       console.error('Error picking document:', err);
     }
   };
-  console.log('selected value', selectedFile);
+ 
   const getFeedback = async () => {
     const FeedbackForm = {
       area: inputValues.area,
@@ -81,11 +80,15 @@ const Feedback = ({navigation}) => {
       category: inputValues.category,
       request: inputValues.request,
       description: inputValues.description,
-      fileurl: "data:application/pdf;base64," +  selectedFile,
+      fileurl: 'data:application/pdf;base64,' + selectedFile,
     };
     console.log('FeedbackForm', FeedbackForm);
-    await dispatch(PostFeedService(FeedbackForm))
+    await dispatch(PostFeedService(FeedbackForm));
+    alert("Thanks for feedback!!!")
+    setInputValues([{}]);
+    setSelectedFile(null);
   };
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -93,7 +96,7 @@ const Feedback = ({navigation}) => {
           <Text style={styles.label}>Area *</Text>
           <TouchableHighlight style={styles.selectedContainer}>
             <Picker
-              style={{color: "#000"}}
+              style={{color: '#000'}}
               ref={pickerRef}
               selectedValue={inputValues.area}
               mode="dropdown"
@@ -111,7 +114,7 @@ const Feedback = ({navigation}) => {
           <Text style={styles.label}>Building *</Text>
           <TouchableHighlight style={styles.selectedContainer}>
             <Picker
-              style={{color: "#000"}}
+              style={{color: '#000'}}
               ref={pickerRef}
               selectedValue={inputValues.building}
               mode="dropdown"
@@ -129,7 +132,7 @@ const Feedback = ({navigation}) => {
           <Text style={styles.label}>Category *</Text>
           <TouchableHighlight style={styles.selectedContainer}>
             <Picker
-              style={{color: "#000"}}
+              style={{color: '#000'}}
               ref={pickerRef}
               selectedValue={inputValues.category}
               mode="dropdown"
@@ -147,7 +150,7 @@ const Feedback = ({navigation}) => {
           <Text style={styles.label}>Issue / Request *</Text>
           <TouchableHighlight style={styles.selectedContainer}>
             <Picker
-              style={{color: "#000"}}
+              style={{color: '#000'}}
               ref={pickerRef}
               selectedValue={inputValues.request}
               mode="dropdown"
@@ -170,14 +173,24 @@ const Feedback = ({navigation}) => {
             onChangeText={text => handleInputChange('description', text)}
           />
 
-          <TouchableOpacity onPress={pickDocument} style={styles.buttonn}>
-            <Text style={styles.buttonText}>Choose Document</Text>
+          <TouchableOpacity
+            onPress={pickDocument}
+            style={[
+              styles.buttonn,
+              {backgroundColor: selectedFile ? 'green' : '#007BFF'},
+            ]}>
+            <Text style={styles.buttonText}>
+              {selectedFile ? 'Upload Successfully' : 'Attach File'}
+            </Text>
           </TouchableOpacity>
 
           <Button
             title={'Submit'}
             style={styles.button}
             onPress={getFeedback}
+            disabled={
+              Object.values(inputValues).every(value => !!value) ? false : true
+            }
           />
         </View>
       </View>
@@ -194,7 +207,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginTop: 12,
+    marginTop: 6,
     marginBottom: 12,
     color: '#000',
   },
@@ -211,8 +224,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#007BFF',
     padding: 10,
     borderRadius: 5,
+    marginTop: 12,
   },
   buttonText: {
     color: 'white',
+    fontSize: 18,
   },
 });
