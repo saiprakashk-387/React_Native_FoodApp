@@ -8,7 +8,7 @@ import {
   ImageBackground,
   ScrollView,
 } from 'react-native';
-import React, {useLayoutEffect, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {
   DefaultButton,
   HomeButton,
@@ -16,8 +16,12 @@ import {
   TextIconButton,
 } from '../components/IconButton';
 import {SmallButton} from '../components/Button';
+import {useDispatch, useSelector} from 'react-redux';
+import {DeleteFoodService, GetOrderFoodService} from '../services';
 
 const PreBooking = ({navigation}) => {
+  const {order} = useSelector(state => state.foods);
+  const dispatch = useDispatch();
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -26,21 +30,37 @@ const PreBooking = ({navigation}) => {
     });
   }, [navigation]);
 
+  useEffect(() => {
+    dispatch(GetOrderFoodService());
+  }, []);
+
+  console.log('dispatch order', order);
+
+  const orderCancel = async id => {
+    await dispatch(DeleteFoodService(id));
+    await dispatch(GetOrderFoodService());
+  };
+
   return (
     <ImageBackground
       style={styles.container}
       source={require('../assets/images/pre_background.jpg')}>
       <ScrollView>
-        <Text style={styles.text}>Booking Date {'  '} 06/04/2023</Text>
+        <Text style={styles.text}>
+          Booking Date {'  '} {order[0]?.availabledate}
+        </Text>
         <View style={styles.section}>
-          <View style={styles.viewRow}>
-            <TextIconButton title={'Breakfast'} />
-            <SmallButton title={'cancel'} />
-          </View>
-          <View style={styles.viewRow}>
-            <TextIconButton title={'Lunch'} />
-            <SmallButton title={'cancel'} />
-          </View>
+          {order &&
+            order?.map((orderItem, i) => (
+              <View style={styles.viewRow} key={i}>
+                <TextIconButton title={orderItem?.foodtype} />
+                <SmallButton
+                  title={'cancel'}
+                  onPress={() => orderCancel(orderItem?._id)}
+                />
+              </View>
+            ))}
+
           <Text style={[styles.text, {marginRight: 'auto', marginLeft: 100}]}>
             (Or)
           </Text>
@@ -49,16 +69,15 @@ const PreBooking = ({navigation}) => {
           </View>
 
           <Text style={styles.text}>
-            Your Food Pre-Booking for {''} 06/04/2023
+            Your Food Pre-Booking for {''} {order[0]?.availabledate}
           </Text>
-          <View style={[styles.viewRow, {marginLeft: 12}]}>
-            <DefaultButton title={'Lunch'} />
-            <SmallButton title={'cancel'} />
-          </View>
-          <View style={[styles.viewRow, {marginLeft: 12, marginTop: -30}]}>
-            <DefaultButton title={'Dinner'} />
-            <SmallButton title={'cancel'} />
-          </View>
+          {order &&
+            order.map((orderItem, i) => (
+              <View style={[styles.viewRow, {marginLeft: 12}]} key={i}>
+                <DefaultButton title={orderItem?.foodtype} />
+                <SmallButton title={'cancel'} style={{marginLeft: 22}} />
+              </View>
+            ))}
         </View>
       </ScrollView>
     </ImageBackground>

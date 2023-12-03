@@ -31,7 +31,11 @@ const FoodDetails = ({navigation, route}) => {
         data={food}
         keyExtractor={item => item._id}
         renderItem={({item}) => (
-          <PostCard title={item?.foodname} description={item?.foodprice} />
+          <PostCard
+            title={item?.foodname}
+            description={item?.foodprice}
+            onPress={() => navigation.navigate('Order', {foodItem: item})}
+          />
         )}
       />
     </View>
@@ -49,6 +53,6 @@ const styles = StyleSheet.create({
     margin: 12,
     fontSize: 20,
     fontWeight: 'bold',
-    marginLeft: 18
+    marginLeft: 18,
   },
 });

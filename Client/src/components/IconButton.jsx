@@ -67,13 +67,13 @@ const DefaultButton = ({onPress, textStyle, title, style}) => {
       activeOpacity={0.8}
       style={[
         styles.text_btn_container,
-        {backgroundColor: '#0000', width: 110, borderColor: '#0000'},
+        {backgroundColor: '#0000', width: 120, borderColor: '#0000'},
       ]}>
       <Image
         source={require('../assets/images/success.png')}
         style={styles.buttonImage}
       />
-      <Text style={[styles.buttonText, textStyle, {color: '#fff'}]}>
+      <Text style={[styles.buttonText, textStyle, {color: '#fff', marginLeft: 22}]}>
         {title}
       </Text>
     </TouchableOpacity>

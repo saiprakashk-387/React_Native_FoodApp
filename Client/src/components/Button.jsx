@@ -13,14 +13,14 @@ const Button = ({onPress, title, disabled, style}) => {
   );
 };
 
-const SmallButton = ({onPress, title, disabled, style}) => {
+const SmallButton = ({onPress, title, disabled, style, textStyle}) => {
   return (
     <TouchableOpacity
       style={[styles.small_button, style]}
       disabled={disabled}
       activeOpacity={0.8}
       onPress={onPress}>
-      <Text style={[styles.small_text, style]}>{title}</Text>
+      <Text style={[styles.small_text, textStyle]}>{title}</Text>
     </TouchableOpacity>
   );
 };

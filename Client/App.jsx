@@ -12,6 +12,7 @@ import Feedback from './src/screens/Feedback';
 import FoodDetails from './src/screens/FoodDetails';
 import PreBooking from './src/screens/PreBooking';
 import store from './src/features';
+import Order from './src/screens/Order';
 
 const Stack = createNativeStackNavigator();
 
@@ -69,6 +70,16 @@ function App() {
                 headerTitleStyle: {color: 'white'},
                 headerTitleAlign: 'center',
                 headerTitle: 'Pre-Booking',
+              }}
+            />
+            <Stack.Screen
+              name="Order"
+              component={Order}
+              options={{
+                headerStyle: {backgroundColor: '#B31312'},
+                headerTitleStyle: {color: 'white'},
+                headerTitleAlign: 'center',
+                headerTitle: 'Confirm Booking',
               }}
             />
           </Stack.Navigator>
