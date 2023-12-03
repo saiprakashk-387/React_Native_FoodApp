@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const breakFast = require("../Schemas/BreakfastSchema");
 
-router.get("/food", async (req, res) => {
+router.post("/food", async (req, res) => {
   try {
     const foodtype = req.body.foodtype;
     const availabledate = req.body.availabledate;

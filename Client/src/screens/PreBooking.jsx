@@ -27,10 +27,10 @@ const PreBooking = ({navigation}) => {
   }, [navigation]);
 
   return (
-    <ScrollView>
-      <ImageBackground
-        style={styles.container}
-        source={require('../assets/images/pre_background.jpg')}>
+    <ImageBackground
+      style={styles.container}
+      source={require('../assets/images/pre_background.jpg')}>
+      <ScrollView>
         <Text style={styles.text}>Booking Date {'  '} 06/04/2023</Text>
         <View style={styles.section}>
           <View style={styles.viewRow}>
@@ -60,8 +60,8 @@ const PreBooking = ({navigation}) => {
             <SmallButton title={'cancel'} />
           </View>
         </View>
-      </ImageBackground>
-    </ScrollView>
+      </ScrollView>
+    </ImageBackground>
   );
 };
 

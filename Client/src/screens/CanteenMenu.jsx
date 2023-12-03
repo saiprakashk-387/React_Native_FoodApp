@@ -8,13 +8,18 @@ import {
   ImageBackground,
   ScrollView,
 } from 'react-native';
-import React, {useLayoutEffect, useState} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import React, {useLayoutEffect, useState, useEffect} from 'react';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {HomeButton} from '../components/IconButton';
 import {Button} from '../components/Button';
 import {DateTime} from '../utils/Dateformate';
+import {GetFoodService} from '../services';
+import axios from 'axios';
 
 const CanteenMenu = ({navigation}) => {
+  const food = useSelector(state => state.foods);
+  const dispatch = useDispatch();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [datePickerVisible, setDatePickerVisible] = useState(false);
   const showDatePicker = () => {
@@ -38,11 +43,21 @@ const CanteenMenu = ({navigation}) => {
     });
   }, [navigation]);
 
+  const foodClick = async () => {
+    const obj = {
+      foodtype: 'BreakFast',
+      availabledate: '03-12-2023',
+    };
+    await dispatch(GetFoodService(obj));
+    navigation.navigate('FoodDetails', {foodData: obj});
+  };
+
+  console.log('food', selectedDate);
   return (
-    <ScrollView>
-      <ImageBackground
-        style={styles.container}
-        source={require('../assets/images/menu_background.jpg')}>
+    <ImageBackground
+      style={styles.container}
+      source={require('../assets/images/menu_background.jpg')}>
+      <ScrollView>
         <View style={styles.viewRow}>
           <TouchableHighlight
             style={styles.highContainer}
@@ -66,13 +81,15 @@ const CanteenMenu = ({navigation}) => {
         </View>
         <Button
           title={'Breakfast'}
-          onPress={() => navigation.navigate('FoodDetails')}
+          onPress={() => {
+            foodClick();
+          }}
         />
         <Button title={'Lunch'} />
         <Button title={'Diet Lunch'} />
         <Button title={'Dinner'} />
-      </ImageBackground>
-    </ScrollView>
+      </ScrollView>
+    </ImageBackground>
   );
 };
 
