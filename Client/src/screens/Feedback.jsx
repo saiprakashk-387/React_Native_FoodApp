@@ -6,23 +6,35 @@ import {
   View,
   TextInput,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useLayoutEffect, useRef, useState} from 'react';
 import {Picker} from '@react-native-picker/picker';
+import DocumentPicker from 'react-native-document-picker';
+import RNFS from 'react-native-fs';
 import {HomeButton, RefrashButton} from '../components/IconButton';
 import {Button} from '../components/Button';
 
 const Feedback = ({navigation}) => {
-  const [selectedLanguage, setSelectedLanguage] = useState();
+  const [selectedFile, setSelectedFile] = useState();
+  const [inputValues, setInputValues] = useState({
+    area: '',
+    building: '',
+    category: '',
+    request: '',
+    description: '',
+  });
   const pickerRef = useRef();
 
-  function open() {
-    pickerRef.current.focus();
-  }
+  const handleInputChange = (inputName, text) => {
+    console.log('inputName', inputName);
+    console.log('text', text);
+    setInputValues({
+      ...inputValues,
+      [inputName]: text,
+    });
+  };
 
-  function close() {
-    pickerRef.current.blur();
-  }
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -33,7 +45,41 @@ const Feedback = ({navigation}) => {
       ),
     });
   }, [navigation]);
+  const pickDocument = async () => {
+    try {
+      const result = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+      });
+      console.log(
+        result[0].fileCopyUri || result[0].uri,
+        result[0].type, // mime type
+        result[0].name,
+        result[0].size,
+      );
+      const uri = result[0]?.uri || result[0]?.fileCopyUri;
 
+      if (uri) {
+        const fileContent = await RNFS.readFile(uri, 'base64');
+        setSelectedFile(fileContent);
+        console.log('Base64 string:', fileContent);
+      } else {
+        console.error('File URI is undefined');
+      }
+    } catch (err) {
+      console.error('Error picking document:', err);
+    }
+  };
+  const getFeedback = () => {
+    const FeedbackForm = {
+      area: inputValues.area,
+      building: inputValues.building,
+      category: inputValues.category,
+      request: inputValues.request,
+      description: inputValues.description,
+      fileurl: inputValues.selectedFile,
+    };
+    console.log('FeedbackForm', FeedbackForm);
+  };
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -42,14 +88,15 @@ const Feedback = ({navigation}) => {
           <TouchableHighlight style={styles.selectedContainer}>
             <Picker
               ref={pickerRef}
-              selectedValue={selectedLanguage}
+              selectedValue={inputValues.area}
               mode="dropdown"
               dropdownIconRippleColor="#000"
               onValueChange={(itemValue, itemIndex) =>
-                setSelectedLanguage(itemValue)
+                handleInputChange('area', itemValue)
               }>
-              <Picker.Item label="Java" value="java" />
-              <Picker.Item label="JavaScript" value="js" />
+              <Picker.Item label="Select Area" value="" />
+              <Picker.Item label="Chennai" value="chennai" />
+              <Picker.Item label="Banglore" value="banglore" />
             </Picker>
           </TouchableHighlight>
 
@@ -57,14 +104,15 @@ const Feedback = ({navigation}) => {
           <TouchableHighlight style={styles.selectedContainer}>
             <Picker
               ref={pickerRef}
-              selectedValue={selectedLanguage}
+              selectedValue={inputValues.building}
               mode="dropdown"
               dropdownIconRippleColor="#000"
               onValueChange={(itemValue, itemIndex) =>
-                setSelectedLanguage(itemValue)
+                handleInputChange('building', itemValue)
               }>
-              <Picker.Item label="Java" value="java" />
-              <Picker.Item label="JavaScript" value="js" />
+              <Picker.Item label="Select building" value="" />
+              <Picker.Item label="VS Mall" value="vs_mall" />
+              <Picker.Item label="Forum Mall" value="forum_mall" />
             </Picker>
           </TouchableHighlight>
 
@@ -72,14 +120,15 @@ const Feedback = ({navigation}) => {
           <TouchableHighlight style={styles.selectedContainer}>
             <Picker
               ref={pickerRef}
-              selectedValue={selectedLanguage}
+              selectedValue={inputValues.category}
               mode="dropdown"
               dropdownIconRippleColor="#000"
               onValueChange={(itemValue, itemIndex) =>
-                setSelectedLanguage(itemValue)
+                handleInputChange('category', itemValue)
               }>
-              <Picker.Item label="Java" value="java" />
-              <Picker.Item label="JavaScript" value="js" />
+              <Picker.Item label="Select Category" value="" />
+              <Picker.Item label="Maintenance" value="maintenance" />
+              <Picker.Item label="Wifi" value="wifi" />
             </Picker>
           </TouchableHighlight>
 
@@ -87,21 +136,36 @@ const Feedback = ({navigation}) => {
           <TouchableHighlight style={styles.selectedContainer}>
             <Picker
               ref={pickerRef}
-              selectedValue={selectedLanguage}
+              selectedValue={inputValues.request}
               mode="dropdown"
               dropdownIconRippleColor="#000"
               onValueChange={(itemValue, itemIndex) =>
-                setSelectedLanguage(itemValue)
+                handleInputChange('request', itemValue)
               }>
-              <Picker.Item label="Java" value="java" />
-              <Picker.Item label="JavaScript" value="js" />
+              <Picker.Item label="Select Request" value="" />
+              <Picker.Item label="Access" value="accesss" />
+              <Picker.Item label="Entry" value="entry" />
             </Picker>
           </TouchableHighlight>
 
           <Text style={styles.label}>Description</Text>
-          <TextInput style={styles.selectedContainer} />
+          <TextInput
+            style={styles.selectedContainer}
+            value={inputValues.description}
+            name="description"
+            onChangeText={text => handleInputChange('description', text)}
+            placeholder="Enter your Description"
+          />
 
-          <Button title={'Submit'} style={styles.button} />
+          <TouchableOpacity onPress={pickDocument} style={styles.buttonn}>
+            <Text style={styles.buttonText}>Choose Document</Text>
+          </TouchableOpacity>
+
+          <Button
+            title={'Submit'}
+            style={styles.button}
+            onPress={getFeedback}
+          />
         </View>
       </View>
     </ScrollView>
@@ -127,5 +191,13 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 30,
     paddingVertical: 8,
+  },
+  buttonn: {
+    backgroundColor: '#007BFF',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
   },
 });
