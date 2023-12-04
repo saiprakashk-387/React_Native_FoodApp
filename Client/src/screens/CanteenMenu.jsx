@@ -43,9 +43,9 @@ const CanteenMenu = ({navigation}) => {
     });
   }, [navigation]);
 
-  const foodClick = async () => {
+  const foodClick = async val => {
     const obj = {
-      foodtype: 'BreakFast',
+      foodtype: val,
       availabledate: '03-12-2023',
     };
     await dispatch(GetFoodService(obj));
@@ -82,12 +82,27 @@ const CanteenMenu = ({navigation}) => {
         <Button
           title={'Breakfast'}
           onPress={() => {
-            foodClick();
+            foodClick('BreakFast');
           }}
         />
-        <Button title={'Lunch'} />
-        <Button title={'Diet Lunch'} />
-        <Button title={'Dinner'} />
+        <Button
+          title={'Lunch'}
+          onPress={() => {
+            foodClick('lunch');
+          }}
+        />
+        <Button
+          title={'Diet Lunch'}
+          onPress={() => {
+            foodClick('diet_lunch');
+          }}
+        />
+        <Button
+          title={'Dinner'}
+          onPress={() => {
+            foodClick('dinner');
+          }}
+        />
       </ScrollView>
     </ImageBackground>
   );
