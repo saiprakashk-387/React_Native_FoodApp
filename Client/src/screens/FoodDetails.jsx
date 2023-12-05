@@ -1,5 +1,4 @@
-/* eslint-disable react/no-unstable-nested-components */
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {FlatList, ImageBackground, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useLayoutEffect} from 'react';
 import {BackButton, HomeButton} from '../components/IconButton';
 import {useSelector, useDispatch} from 'react-redux';
@@ -24,27 +23,31 @@ const FoodDetails = ({navigation, route}) => {
     dispatch(GetFoodService(foodData));
   }, []);
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>{foodData?.foodtype}</Text>
-      {food && food?.length >= 1 ? (
-        <FlatList
-          data={food}
-          keyExtractor={item => item._id}
-          renderItem={({item}) => (
-            <PostCard
-              title={item?.foodname}
-              description={item?.foodprice}
-              foodtype={null}
-              // onPress={() => navigation.navigate('Order', {foodItem: item})}
-            />
-          )}
-        />
-      ) : (
-        <View style={styles.section}>
-          <Text style={styles.error}> No Data Found. </Text>
-        </View>
-      )}
-    </View>
+    <ImageBackground
+      style={styles.container}
+      source={require('../assets/images/pre_background.jpg')}>
+      <View style={styles.container}>
+        {/* <Text style={styles.heading}>{foodData?.foodtype}</Text> */}
+        {food && food?.length >= 1 ? (
+          <FlatList
+            data={food}
+            keyExtractor={item => item._id}
+            renderItem={({item}) => (
+              <PostCard
+                title={item?.foodname}
+                description={item?.foodprice}
+                foodtype={null}
+                // onPress={() => navigation.navigate('Order', {foodItem: item})}
+              />
+            )}
+          />
+        ) : (
+          <View style={styles.section}>
+            <Text style={styles.error}> No Data Found. </Text>
+          </View>
+        )}
+      </View>
+    </ImageBackground>
   );
 };
 
