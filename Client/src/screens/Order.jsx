@@ -65,12 +65,10 @@ const styles = StyleSheet.create({
   },
   desc: {
     fontSize: 16,
-    color: '#000',
     color: 'green',
   },
   dateText: {
     fontSize: 16,
-    color: '#000',
     color: 'blue',
   },
 });
