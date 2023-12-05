@@ -183,18 +183,23 @@ const Feedback = ({navigation}) => {
           <Text style={{color: '#B31312', fontSize: 12}}>
             Note:Your File Size Should not Exceed 20KB *
           </Text>
-          {!disabledbutton ? (
+          {inputValues.area &&
+          inputValues.building &&
+          inputValues.category &&
+          inputValues.description &&
+          inputValues.request &&
+          selectedFile ? (
             <Button
               title={'Submit'}
               style={styles.button}
-              // onPress={getFeedback}
-              disabled
+              onPress={getFeedback}
             />
           ) : (
             <Button
               title={'Submit'}
               style={styles.button}
-              onPress={getFeedback}
+              // onPress={getFeedback}
+              disabled
             />
           )}
         </View>
