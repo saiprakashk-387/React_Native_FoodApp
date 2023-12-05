@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import React, {useLayoutEffect, useRef, useState} from 'react';
 import {Picker} from '@react-native-picker/picker';
-import DocumentPicker from 'react-native-document-picker';
+import DocumentPicker, {types} from 'react-native-document-picker';
 import RNFS from 'react-native-fs';
 import {useDispatch} from 'react-redux';
 import {HomeButton, RefrashButton} from '../components/IconButton';
@@ -19,7 +19,6 @@ import {PostFeedService} from '../services';
 const Feedback = ({navigation}) => {
   const dispatch = useDispatch();
   const [selectedFile, setSelectedFile] = useState();
-  const [disabledbutton, setdisabledbutton] = useState(false);
   const [inputValues, setInputValues] = useState({
     area: '',
     building: '',
@@ -49,7 +48,7 @@ const Feedback = ({navigation}) => {
   const pickDocument = async () => {
     try {
       const result = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles],
+        type: [types.pdf],
       });
       // console.log(
       //   result[0].fileCopyUri || result[0].uri,
@@ -83,7 +82,6 @@ const Feedback = ({navigation}) => {
     await dispatch(PostFeedService(FeedbackForm));
     setInputValues([{}]);
     setSelectedFile(null);
-    setdisabledbutton(true);
   };
 
   return (
@@ -181,7 +179,7 @@ const Feedback = ({navigation}) => {
             </Text>
           </TouchableOpacity>
           <Text style={{color: '#B31312', fontSize: 12}}>
-            Note:Your File Size Should not Exceed 20KB *
+            Note:Your PDF File Size Should not Exceed 50KB *
           </Text>
           {inputValues.area &&
           inputValues.building &&
