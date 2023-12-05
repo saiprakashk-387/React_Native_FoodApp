@@ -19,6 +19,7 @@ import {PostFeedService} from '../services';
 const Feedback = ({navigation}) => {
   const dispatch = useDispatch();
   const [selectedFile, setSelectedFile] = useState();
+  const [disabledbutton, setdisabledbutton] = useState(false);
   const [inputValues, setInputValues] = useState({
     area: '',
     building: '',
@@ -80,9 +81,9 @@ const Feedback = ({navigation}) => {
       fileurl: 'data:application/pdf;base64,' + selectedFile,
     };
     await dispatch(PostFeedService(FeedbackForm));
-    alert('Thanks for feedback!!!');
     setInputValues([{}]);
     setSelectedFile(null);
+    setdisabledbutton(true);
   };
 
   return (
@@ -179,15 +180,23 @@ const Feedback = ({navigation}) => {
               {selectedFile ? 'Upload Successfully' : 'Attach File'}
             </Text>
           </TouchableOpacity>
-
-          <Button
-            title={'Submit'}
-            style={styles.button}
-            onPress={getFeedback}
-            disabled={
-              Object.values(inputValues).every(value => !!value) ? false : true
-            }
-          />
+          <Text style={{color: '#B31312', fontSize: 12}}>
+            Note:Your File Size Should not Exceed 20KB *
+          </Text>
+          {!disabledbutton ? (
+            <Button
+              title={'Submit'}
+              style={styles.button}
+              // onPress={getFeedback}
+              disabled
+            />
+          ) : (
+            <Button
+              title={'Submit'}
+              style={styles.button}
+              onPress={getFeedback}
+            />
+          )}
         </View>
       </View>
     </ScrollView>

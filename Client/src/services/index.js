@@ -31,6 +31,7 @@ const PostFeedService = data => dispatch => {
   REACT_URL.post('/feedback', data)
     .then(res => {
       dispatch(addFeedback(res.data));
+      alert('Thanks for feedback!!!');
     })
     .catch(error => {
       alert(error.message);
