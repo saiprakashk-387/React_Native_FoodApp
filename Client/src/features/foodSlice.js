@@ -2,8 +2,9 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   food: [],
+  foodList: [],
   order: [],
-  orderItem: {}
+  orderItem: {},
 };
 
 export const foodSlice = createSlice({
@@ -12,6 +13,9 @@ export const foodSlice = createSlice({
   reducers: {
     setFoodList: (state, {payload}) => {
       state.food = payload;
+    },
+    setAllFoodList: (state, {payload}) => {
+      state.foodList = payload;
     },
     setOrderList: (state, {payload}) => {
       state.order = payload;
@@ -22,5 +26,6 @@ export const foodSlice = createSlice({
   },
 });
 
-export const {setFoodList, setOrderList, setDeleteOrder} = foodSlice.actions;
+export const {setFoodList, setAllFoodList, setOrderList, setDeleteOrder} =
+  foodSlice.actions;
 export default foodSlice.reducer;

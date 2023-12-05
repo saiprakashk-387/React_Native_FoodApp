@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unstable-nested-components */
 import {
   StyleSheet,
   Text,
@@ -15,10 +14,10 @@ import {HomeButton} from '../components/IconButton';
 import {Button} from '../components/Button';
 import {DateTime} from '../utils/Dateformate';
 import {GetFoodService} from '../services';
-import axios from 'axios';
 
 const CanteenMenu = ({navigation}) => {
   const food = useSelector(state => state.foods);
+  // const {foodList} = useSelector(state => state.foods);
   const dispatch = useDispatch();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [datePickerVisible, setDatePickerVisible] = useState(false);
@@ -34,7 +33,6 @@ const CanteenMenu = ({navigation}) => {
     setSelectedDate(date);
     hideDatePicker();
   };
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -46,13 +44,11 @@ const CanteenMenu = ({navigation}) => {
   const foodClick = async val => {
     const obj = {
       foodtype: val,
-      availabledate: '03-12-2023',
+      availabledate: DateTime(selectedDate),
     };
     await dispatch(GetFoodService(obj));
     navigation.navigate('FoodDetails', {foodData: obj});
   };
-
-  console.log('food', selectedDate);
   return (
     <ImageBackground
       style={styles.container}
@@ -61,7 +57,8 @@ const CanteenMenu = ({navigation}) => {
         <View style={styles.viewRow}>
           <TouchableHighlight
             style={styles.highContainer}
-            onPress={showDatePicker}>
+            // onPress={showDatePicker}
+          >
             <Text style={styles.highText}>Date</Text>
           </TouchableHighlight>
           <TouchableOpacity

@@ -1,5 +1,3 @@
-// In App.js in a new project
-
 import React from 'react';
 import {Image} from 'react-native';
 import {Provider} from 'react-redux';
@@ -13,6 +11,7 @@ import FoodDetails from './src/screens/FoodDetails';
 import PreBooking from './src/screens/PreBooking';
 import store from './src/features';
 import Order from './src/screens/Order';
+import PreBookFood from './src/screens/PreBookFood';
 
 const Stack = createNativeStackNavigator();
 
@@ -80,6 +79,16 @@ function App() {
                 headerTitleStyle: {color: 'white'},
                 headerTitleAlign: 'center',
                 headerTitle: 'Confirm Booking',
+              }}
+            />
+            <Stack.Screen
+              name="Orderfood"
+              component={PreBookFood}
+              options={{
+                headerStyle: {backgroundColor: '#B31312'},
+                headerTitleStyle: {color: 'white'},
+                headerTitleAlign: 'center',
+                headerTitle: 'Pre Book Menu',
               }}
             />
           </Stack.Navigator>

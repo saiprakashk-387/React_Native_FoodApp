@@ -2,7 +2,7 @@ import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
 import React from 'react';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-const PostCard = ({title, description, onPress}) => {
+const PostCard = ({title, description, foodtype, onPress}) => {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
       <View style={styles.mainCardView}>
@@ -30,7 +30,7 @@ const PostCard = ({title, description, onPress}) => {
 
                   margin: 6,
                 }}>
-                {title}
+                {foodtype ? foodtype + '-' + title : title}
               </Text>
               <Text
                 style={{

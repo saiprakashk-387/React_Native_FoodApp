@@ -1,6 +1,11 @@
 import {REACT_URL} from '../api';
 import {addFeedback} from '../features/feedbackSlice';
-import {setDeleteOrder, setFoodList, setOrderList} from '../features/foodSlice';
+import {
+  setAllFoodList,
+  setDeleteOrder,
+  setFoodList,
+  setOrderList,
+} from '../features/foodSlice';
 
 const GetFoodService = foodType => dispatch => {
   REACT_URL.post('/food', foodType)
@@ -11,12 +16,20 @@ const GetFoodService = foodType => dispatch => {
       alert(error.message);
     });
 };
+const GetAllFoodListService = () => dispatch => {
+  REACT_URL.get('/foodlist')
+    .then(res => {
+      dispatch(setAllFoodList(res.data));
+    })
+    .catch(error => {
+      alert(error.message);
+    });
+};
 
 //add feedback
 const PostFeedService = data => dispatch => {
   REACT_URL.post('/feedback', data)
     .then(res => {
-      console.log('feedback data', res.data);
       dispatch(addFeedback(res.data));
     })
     .catch(error => {
@@ -28,7 +41,6 @@ const PostFeedService = data => dispatch => {
 const OrderFoodService = data => dispatch => {
   REACT_URL.post('/prebookfood', data)
     .then(res => {
-      console.log('order data', res.data);
       dispatch(setOrderList(res.data));
     })
     .catch(error => {
@@ -40,7 +52,6 @@ const OrderFoodService = data => dispatch => {
 const GetOrderFoodService = () => dispatch => {
   REACT_URL.get('/getprebookfood')
     .then(res => {
-      console.log('order data', res.data);
       dispatch(setOrderList(res.data));
     })
     .catch(error => {
@@ -51,9 +62,8 @@ const GetOrderFoodService = () => dispatch => {
 const DeleteFoodService = id => dispatch => {
   REACT_URL.delete(`/deleteprebook/${id}`)
     .then(res => {
-      console.log('order data', res.data);
       dispatch(setDeleteOrder(res.data));
-      dispatch(GetOrderFoodService())
+      dispatch(GetOrderFoodService());
     })
     .catch(error => {
       alert(error.message);
@@ -62,6 +72,7 @@ const DeleteFoodService = id => dispatch => {
 
 export {
   GetFoodService,
+  GetAllFoodListService,
   PostFeedService,
   OrderFoodService,
   GetOrderFoodService,

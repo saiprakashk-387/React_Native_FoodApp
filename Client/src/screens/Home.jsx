@@ -17,8 +17,12 @@ const Home = ({navigation}) => {
   const isTimeInRange = currentTime >= startTime && currentTime <= endTime;
   return (
     <ScrollView>
-      {!isTimeInRange && (
+      {!isTimeInRange ? (
         <Text style={styles.heading}>Pre booking window has been closed</Text>
+      ) : (
+        <Text style={styles.heading}>
+          Pre-Book your food for next day before 4 PM
+        </Text>
       )}
       <Button
         title={'Food Menu'}
@@ -30,7 +34,7 @@ const Home = ({navigation}) => {
       />
       <Button
         title={'Pre Book Food'}
-        onPress={() => navigation.navigate('PreBooking')}
+        onPress={() => navigation.navigate('Orderfood')}
         disabled={isTimeInRange ? false : true}
       />
       <Button
@@ -42,6 +46,7 @@ const Home = ({navigation}) => {
         source={require('../assets/images/Danfoss.jpg')}
         style={styles.bannerImg}
       />
+      <Text style={styles.footer}>Digitalized by GCS</Text>
     </ScrollView>
   );
 };
@@ -53,6 +58,12 @@ const styles = StyleSheet.create({
     color: '#B31312',
     fontSize: 20,
     textAlign: 'center',
+    margin: 14,
+  },
+  footer: {
+    color: '#B31312',
+    fontSize: 20,
+    textAlign: 'right',
     margin: 14,
   },
   bannerImg: {

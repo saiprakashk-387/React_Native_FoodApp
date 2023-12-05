@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unstable-nested-components */
 import {
   StyleSheet,
   Text,
@@ -30,8 +29,6 @@ const Feedback = ({navigation}) => {
   const pickerRef = useRef();
 
   const handleInputChange = (inputName, text) => {
-    console.log('inputName', inputName);
-    console.log('text', text);
     setInputValues({
       ...inputValues,
       [inputName]: text,
@@ -44,7 +41,7 @@ const Feedback = ({navigation}) => {
         <HomeButton onPress={() => navigation.navigate('Home')} />
       ),
       headerRight: () => (
-        <RefrashButton onPress={() => console.log('refrash')} />
+        <RefrashButton onPress={() => console.log('refresh')} />
       ),
     });
   }, [navigation]);
@@ -53,18 +50,18 @@ const Feedback = ({navigation}) => {
       const result = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
-      console.log(
-        result[0].fileCopyUri || result[0].uri,
-        result[0].type, // mime type
-        result[0].name,
-        result[0].size,
-      );
+      // console.log(
+      //   result[0].fileCopyUri || result[0].uri,
+      //   result[0].type, // mime type
+      //   result[0].name,
+      //   result[0].size,
+      // );
       const uri = result[0]?.uri || result[0]?.fileCopyUri;
 
       if (uri) {
         const fileContent = await RNFS.readFile(uri, 'base64');
         setSelectedFile(fileContent);
-        console.log('Base64 string:', fileContent);
+        // console.log('Base64 string:', fileContent);
       } else {
         console.error('File URI is undefined');
       }
@@ -72,7 +69,7 @@ const Feedback = ({navigation}) => {
       console.error('Error picking document:', err);
     }
   };
- 
+
   const getFeedback = async () => {
     const FeedbackForm = {
       area: inputValues.area,
@@ -82,9 +79,8 @@ const Feedback = ({navigation}) => {
       description: inputValues.description,
       fileurl: 'data:application/pdf;base64,' + selectedFile,
     };
-    console.log('FeedbackForm', FeedbackForm);
     await dispatch(PostFeedService(FeedbackForm));
-    alert("Thanks for feedback!!!")
+    alert('Thanks for feedback!!!');
     setInputValues([{}]);
     setSelectedFile(null);
   };

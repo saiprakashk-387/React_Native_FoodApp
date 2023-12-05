@@ -1,9 +1,6 @@
-/* eslint-disable react/no-unstable-nested-components */
 import {
   StyleSheet,
   Text,
-  TouchableHighlight,
-  TouchableOpacity,
   View,
   ImageBackground,
   ScrollView,
@@ -127,6 +124,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: 'red',
     backgroundColor: '#fff',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
 });

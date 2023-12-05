@@ -16,28 +16,34 @@ const FoodDetails = ({navigation, route}) => {
       headerRight: () => (
         <HomeButton onPress={() => navigation.navigate('Home')} />
       ),
+      headerTitle: foodData.foodtype + ' ' + 'Menu',
     });
   }, [navigation]);
 
   useEffect(() => {
     dispatch(GetFoodService(foodData));
   }, []);
-
-  console.log('foodtype', food);
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>{foodData?.foodtype}</Text>
-      <FlatList
-        data={food}
-        keyExtractor={item => item._id}
-        renderItem={({item}) => (
-          <PostCard
-            title={item?.foodname}
-            description={item?.foodprice}
-            onPress={() => navigation.navigate('Order', {foodItem: item})}
-          />
-        )}
-      />
+      {food && food?.length >= 1 ? (
+        <FlatList
+          data={food}
+          keyExtractor={item => item._id}
+          renderItem={({item}) => (
+            <PostCard
+              title={item?.foodname}
+              description={item?.foodprice}
+              foodtype={null}
+              // onPress={() => navigation.navigate('Order', {foodItem: item})}
+            />
+          )}
+        />
+      ) : (
+        <View style={styles.section}>
+          <Text style={styles.error}> No Data Found. </Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -54,5 +60,16 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginLeft: 18,
+  },
+  error: {
+    fontSize: 24,
+    color: 'red',
+    backgroundColor: '#fff',
+    fontWeight: 'bold',
+  },
+  section: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
